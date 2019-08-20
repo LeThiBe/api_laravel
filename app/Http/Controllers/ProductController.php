@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Product;
 use JWTAuth;
@@ -36,19 +37,15 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'price' => 'required|integer',
-            'quantity' => 'required|integer'
+        $data = $request->only([
+            'name',
+            'price',
+            'quantity',
         ]);
 
-        $product = $this->user->products()->create([
-            'name' => $request->name,
-            'price' =>  $request->price,
-            'quantity' => $request->quantity,
-        ]);
+        $product = $this->user->products()->create($data);
 
         if ($product)
             return response()->json([
@@ -62,7 +59,7 @@ class ProductController extends Controller
             ], 500);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
         $product = $this->user->products()->find($id);
         if (!$product) {
@@ -71,8 +68,8 @@ class ProductController extends Controller
                 'message' => 'Sorry, product with id' . $id . 'cannot be found'
             ], 400);
         }
-        $updated = $product->fill($request->all())
-            ->save();
+        $updated = $product->update($request->all());
+
         if ($updated) {
             return response()->json([
                 'success' => true
