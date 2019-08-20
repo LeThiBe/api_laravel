@@ -16,7 +16,9 @@ Route::post('auth/register', 'UserController@register');
 Route::post('auth/login', 'UserController@login');
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('user-info', 'UserController@getUserInfo');
+    Route::get('products', 'ProductController@index');
+    Route::get('products/{id}', 'ProductController@show');
+    Route::post('products', 'ProductController@store');
+    Route::put('products/{id}', 'ProductController@update');
+    Route::delete('products/{id}', 'ProductController@destroy');
 });
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
