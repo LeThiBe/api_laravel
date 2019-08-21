@@ -81,7 +81,7 @@ class ProductController extends Controller
             ], 500);
         }
     }
-    
+
     public function destroy($id)
     {
         $product = $this->user->products()->find($id);
@@ -91,7 +91,7 @@ class ProductController extends Controller
                 'message' => 'Sorry, product with id' . $id. 'cannot be found'
             ], 400);
         }
-         
+
         if ($product->delete()) {
             return response()->json([
                 'success' => true
@@ -104,3 +104,17 @@ class ProductController extends Controller
         }
     }
 }
+
+/**
+ * @SWG\Swagger(
+ *      schemes={"http", "https"},
+ *      @SWG\Info(
+ *          version="1.0.0",
+ *          title="L5 Swagger API",
+ *          description="L5 Swagger API description",
+ *          @SWG\Contact(
+ *              email="darius@matulionis.lt"
+ *          ),
+ *      )
+ *  )
+ */
